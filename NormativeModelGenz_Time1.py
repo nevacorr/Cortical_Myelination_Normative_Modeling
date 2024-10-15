@@ -27,14 +27,17 @@ show_plots = 0  #set to 1 to show training and test data ymvs yhat and spline fi
 show_nsubject_plots = 1 #set to 1 to plot number of subjects used in analysis, for each age and gender
 spline_order = 1 # order of spline to use for model
 spline_knots = 2 # number of knots in spline to use in model
-genz_data_combined_file = '/home/toddr/neva/PycharmProjects/data_dir/MPF_CT_GMV_AFFB_SM_data_combined_18Sep2023.csv'
+
 perform_train_test_split_precovid = 0  # flag indicating whether to split training set (pre-covid data) into train and
                                        # validations (test) sets. If this is set to 0, the entire training set is used
                                        # for the model and there is no validation set. Regardless of the value of this
                                        # flag, no post-covid data is used in creating or evaluating the normative model.
 
 working_dir = '/home/toddr/neva/PycharmProjects/Adolescent-MPF-Normative-Modeling'
-data_dir = '/home/toddr/neva/data_dir'
+data_dir = '/home/toddr/neva/PycharmProjects/data_dir'
+ct_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
+
+genz_data_combined_file = os.path.join(data_dir, 'MPF_CT_GMV_AFFB_SM_data_combined_18Sep2023.csv')
 
 #turn off interactive mode, don't show plots unless plt.show() is specified
 plt.ioff()
@@ -63,18 +66,8 @@ if show_nsubject_plots:
     plot_num_subjs(all_data, 'Subjects by Age with Pre-COVID Data\n'
                    '(Total N=' + str(all_data.shape[0]) + ')', struct_var, 'pre-covid_allsubj', working_dir)
 
-########
-#Before any modeling, determine which subjects will be included in the training (pre-COVID) and test (post-COVID) analysis.
-#Save subject numbers to file.
-#Do this only once and then comment the four following lines of code out.
-########
-#save_test_set_to_file_no_long(struct_var, 9)
-#save_test_set_to_file_no_long(struct_var, 11)
-#save_test_set_to_file_no_long(struct_var, 13)
-#The resulting saved file is named visit1_subjects_excluded_from_normative_model_test_set_{struct_var}_9_11_13.txt
-
 # read in file of subjects in test set at ages 9, 11 and 13
-fname='/home/toddr/neva/PycharmProjects/PCNNatureProtocolTutorial/visit1_subjects_excluded_from_normative_model_test_set_cortthick_9_11_13.txt'.format(working_dir, struct_var)
+fname=os.path.join(ct_dir, 'visit1_subjects_excluded_from_normative_model_test_set_cortthick_9_11_13.txt')
 subjects_test = pd.read_csv(fname, header=None)
 
 # exclude subjects from the training set who are in test set
@@ -83,7 +76,7 @@ all_data = all_data[~all_data['participant_id'].isin(subjects_test[0])]
 
 #write subject numbers for training set to file
 subjects_training = all_data['participant_id'].tolist()
-fname = '{}/visit1_subjects_used_to_create_normative_model_train_set_{}.txt'.format(working_dir, struct_var)
+fname = os.path.join(ct_dir, 'visit1_subjects_used_to_create_normative_model_train_set_{}.txt')
 file1 = open(fname, "w")
 for subj in subjects_training:
     file1.write(str(subj) + "\n")
