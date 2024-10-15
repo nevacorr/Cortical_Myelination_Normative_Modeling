@@ -7,8 +7,8 @@
 import pandas as pd
 from load_raw_data import load_raw_data
 
-def load_genz_data(struct_var, visit, path, datafilename):
-    cov, genz_data_combined = load_raw_data(struct_var, visit, datafilename)
+def load_genz_data(struct_var, visit, path, datafilename, data_dir):
+    cov, genz_data_combined = load_raw_data(struct_var, visit, datafilename, data_dir)
 
     # remove all rows not from specified visit
     cov = cov.loc[cov['visit'] == visit]

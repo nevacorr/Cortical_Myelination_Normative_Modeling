@@ -27,20 +27,21 @@ show_plots = 0  #set to 1 to show training and test data ymvs yhat and spline fi
 show_nsubject_plots = 1 #set to 1 to plot number of subjects used in analysis, for each age and gender
 spline_order = 1 # order of spline to use for model
 spline_knots = 2 # number of knots in spline to use in model
-genz_data_combined_file = '/home/toddr/neva/PycharmProjects/pythonProject/MPF_CT_GMV_AFFB_SM_data_combined_18Sep2023.csv'
+genz_data_combined_file = '/home/toddr/neva/PycharmProjects/data_dir/MPF_CT_GMV_AFFB_SM_data_combined_18Sep2023.csv'
 perform_train_test_split_precovid = 0  # flag indicating whether to split training set (pre-covid data) into train and
                                        # validations (test) sets. If this is set to 0, the entire training set is used
                                        # for the model and there is no validation set. Regardless of the value of this
                                        # flag, no post-covid data is used in creating or evaluating the normative model.
 
 working_dir = '/home/toddr/neva/PycharmProjects/Adolescent-MPF-Normative-Modeling'
+data_dir = '/home/toddr/neva/data_dir'
 
 #turn off interactive mode, don't show plots unless plt.show() is specified
 plt.ioff()
 
 #load visit 1 (pre-COVID) data
 visit=1
-brain_good, all_data, roi_ids = load_genz_data(struct_var, visit, working_dir, genz_data_combined_file )
+brain_good, all_data, roi_ids = load_genz_data(struct_var, visit, working_dir, genz_data_combined_file, data_dir)
 
 #make directories to store files
 makenewdir('data/')

@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
-def load_raw_data(struct_var, visit, datafilename):
+import os
+
+def load_raw_data(struct_var, visit, datafilename, data_dir):
     # Load MPF, cortical thickness gm, affective behavior and social media data
     genz_data_combined = pd.read_csv(datafilename)
 
@@ -17,17 +19,13 @@ def load_raw_data(struct_var, visit, datafilename):
     # Load data quality measures and puberty values
     ##########
     if visit == 1:
-        mpf_quality = pd.read_csv('/home/toddr/neva/genz/mpf_data_quality_visit1.csv')
-        euler = pd.read_csv('/home/toddr/neva/genz/freesurfer_processing/visit1_v7/visit1_euler_numbers_18Sep2023',
-                            header=None)
-        pds = pd.read_csv(
-            '/home/toddr/neva/PycharmProjects/Puberty_Analysis/GenZ Puberty Scaling Visit 1 for python.csv')
+        mpf_quality = pd.read_csv(os.path.join(data_dir, 'mpf_data_quality_visit1.csv'))
+        euler = pd.read_csv(os.path.join(data_dir, 'visit1_euler_numbers_18Sep2023.csv'), header=None)
+        pds = pd.read_csv(os.path.join(data_dir, 'GenZ Puberty Scaling Visit 1 for python.csv'))
     elif visit == 2:
-        mpf_quality = pd.read_csv('/home/toddr/neva/genz/mpf_data_quality_visit2.csv')
-        euler = pd.read_csv('/home/toddr/neva/genz/freesurfer_processing/visit2_v7/visit2_euler_numbers_18Sep2023',
-                            header=None)
-        pds = pd.read_csv(
-            '/home/toddr/neva/PycharmProjects/Puberty_Analysis/GenZ Puberty Scaling Visit 2 for python.csv')
+        mpf_quality = pd.read_csv(os.path.join(data_dir, 'mpf_data_quality_visit2.csv'))
+        euler = pd.read_csv(os.path.join(data_dir, 'visit2_v7/visit2_euler_numbers_18Sep2023'), header=None)
+        pds = pd.read_csv(os.path.join(data_dir, 'GenZ Puberty Scaling Visit 2 for python.csv'))
 
     pds.rename(columns={'Subject ID': 'subject', 'Puberty Development Scale Scoring': 'puberty'}, inplace=True)
 
